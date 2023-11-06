@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DA0BCBC02AF8B76300B81165 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA0BCBBF2AF8B76300B81165 /* ViewModel.swift */; };
 		DA1311F22A99760200ABCFF9 /* Geppo_Iphone_VersionApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA1311F12A99760200ABCFF9 /* Geppo_Iphone_VersionApp.swift */; };
 		DA1311F42A99760200ABCFF9 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA1311F32A99760200ABCFF9 /* ContentView.swift */; };
 		DA1311F62A99760300ABCFF9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DA1311F52A99760300ABCFF9 /* Assets.xcassets */; };
@@ -17,6 +18,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		DA0BCBBF2AF8B76300B81165 /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
 		DA1311EE2A99760200ABCFF9 /* Geppo_Iphone_Version.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Geppo_Iphone_Version.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA1311F12A99760200ABCFF9 /* Geppo_Iphone_VersionApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Geppo_Iphone_VersionApp.swift; sourceTree = "<group>"; };
 		DA1311F32A99760200ABCFF9 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -38,6 +40,25 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		DA0BCBC12AF8CAAB00B81165 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				DAEDB2D62AA2F088001D70BA /* UserEntry.swift */,
+				DA0BCBBF2AF8B76300B81165 /* ViewModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		DA0BCBC22AF8CACA00B81165 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				DAEDB2D42AA2ECE0001D70BA /* TableView.swift */,
+				DA1311F32A99760200ABCFF9 /* ContentView.swift */,
+				DAEDB2D82AA41832001D70BA /* EditEntryView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		DA1311E52A99760200ABCFF9 = {
 			isa = PBXGroup;
 			children = (
@@ -58,10 +79,8 @@
 			isa = PBXGroup;
 			children = (
 				DA1311F12A99760200ABCFF9 /* Geppo_Iphone_VersionApp.swift */,
-				DAEDB2D62AA2F088001D70BA /* UserEntry.swift */,
-				DA1311F32A99760200ABCFF9 /* ContentView.swift */,
-				DAEDB2D42AA2ECE0001D70BA /* TableView.swift */,
-				DAEDB2D82AA41832001D70BA /* EditEntryView.swift */,
+				DA0BCBC22AF8CACA00B81165 /* View */,
+				DA0BCBC12AF8CAAB00B81165 /* Model */,
 				DA1311F52A99760300ABCFF9 /* Assets.xcassets */,
 				DA1311F72A99760300ABCFF9 /* Preview Content */,
 			);
@@ -150,6 +169,7 @@
 				DAEDB2D92AA41832001D70BA /* EditEntryView.swift in Sources */,
 				DAEDB2D52AA2ECE0001D70BA /* TableView.swift in Sources */,
 				DA1311F22A99760200ABCFF9 /* Geppo_Iphone_VersionApp.swift in Sources */,
+				DA0BCBC02AF8B76300B81165 /* ViewModel.swift in Sources */,
 				DAEDB2D72AA2F088001D70BA /* UserEntry.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

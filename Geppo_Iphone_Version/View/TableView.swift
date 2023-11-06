@@ -9,30 +9,30 @@ import SwiftUI
 
 struct TableView: View {
    
-    
-    @Binding var userEntries: [UserEntry]
+    @ObservedObject var viewModel: ContentViewViewModel
+    //@Binding var userEntries: [UserEntry]
    
     
     var body: some View {
         
         NavigationStack {
-            if $userEntries.isEmpty{
+            if viewModel.userEntries.isEmpty{
                 ContentUnavailableView("NoData", systemImage: "tray.fill", description: Text("Nenhuma data inserida"))
             }else {
                 List{
-                    ForEach($userEntries.indices, id: \.self) { index in
+                    ForEach(viewModel.userEntries.indices, id: \.self) { index in
                         NavigationLink(
-                                                destination: EditEntryView(entry: $userEntries[index], userEntries: $userEntries),
+                            destination: EditEntryView(entry: $viewModel.userEntries[index], userEntries: $viewModel.userEntries),
                                                 label: {
                         VStack(alignment: .leading) {
-                            Text("今日の日付　: \(userEntries[index].formattedDate())")
-                            Text("積み先　: \(userEntries[index].tsumisaki)")
-                            Text("行き先　: \(userEntries[index].ikisaki)")
-                            Text("コンテナNo.　: \(userEntries[index].coNumber)")
-                            Text("開始　: \(userEntries[index].localDevolucao?.rawValue ?? "nenhum")")
-                            Text("コンテナサイズ　: \(userEntries[index].selectedSize.rawValue)")
-                            Text("実 / 空　: \(userEntries[index].selectedEstado.rawValue)")
-                            Text("車しNo.　: \(userEntries[index].shyashiNumber)")
+                            Text("今日の日付　: \(viewModel.userEntries[index].formattedDate())")
+                            Text("積み先　: \(viewModel.userEntries[index].tsumisaki)")
+                            Text("行き先　: \(viewModel.userEntries[index].ikisaki)")
+                            Text("コンテナNo.　: \(viewModel.userEntries[index].coNumber)")
+                            Text("開始　: \(viewModel.userEntries[index].localDevolucao?.rawValue ?? "nenhum")")
+                            Text("コンテナサイズ　: \(viewModel.userEntries[index].selectedSize.rawValue)")
+                            Text("実 / 空　: \(viewModel.userEntries[index].selectedEstado.rawValue)")
+                            Text("車しNo.　: \(viewModel.userEntries[index].shyashiNumber)")
                         }
                         
                     }
@@ -57,7 +57,7 @@ struct TableView: View {
     
     private func deleteRow (at offsets: IndexSet) {
         withAnimation{
-            userEntries.remove(atOffsets: offsets)
+            viewModel.userEntries.remove(atOffsets: offsets)
             
             
         }
