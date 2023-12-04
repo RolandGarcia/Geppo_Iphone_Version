@@ -9,14 +9,15 @@ import SwiftUI
 
 
 struct ContentView: View {
-    @ObservedObject private var viewModel = ContentViewViewModel()
    
-    @State private var userEntries: [UserEntry] = []
+     
+    @StateObject private var viewModel = ContentViewViewModel()
+    
     @State private var showTableView = false
     
     var body: some View {
         NavigationStack {
-            Form {
+            Form{
                 Section(header: Text("日付け入れてください")) {
                     DatePicker("日付", selection: $viewModel.selectedDate, displayedComponents: [.date])
                         .datePickerStyle(.compact)
@@ -27,9 +28,11 @@ struct ContentView: View {
                 Section(header: Text("積み先と Co.Number")) {
                     TextField("積み先", text: $viewModel.tsumisaki)
                     TextField("Co.Number", text: $viewModel.coNumber)
-                        
-                        }
                     
+                    
+                }
+                
+                
                 Section(header: Text("行き先と輸出業者")) {
                     TextField("行き先", text: $viewModel.ikisaki)
                     Picker("輸出業者", selection: $viewModel.localDevolucao) {
@@ -59,36 +62,45 @@ struct ContentView: View {
                         .keyboardType(.numberPad)
                 }
             }
-            .navigationTitle("Geppo")
-            .toolbar {
-                ToolbarItemGroup(placement: .bottomBar) {
-                    Button(action: viewModel.addRowData) {
-                        Image(systemName: "plus")
-                            .font(.title)
-                            .foregroundColor(.red)
+                .scrollDismissesKeyboard(.immediately)
+                .navigationTitle("Geppo")
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem (placement: .topBarTrailing) {
+                        Button(action: {
+                            viewModel.addRowData()
+                        }, label: {
+                            Image (systemName: "plus.circle.fill")
+                                .foregroundStyle(.blue)
+                                .font(.title2)
+                        })
                     }
-                    .padding()
-                    Button( action: {
-                        showTableView.toggle()
-                        print(showTableView)
-                    },label: {
-                        Image(systemName: "archivebox.fill")
-                            .font(.title) // Ajuste o tamanho da imagem conforme necessário
-                            .foregroundColor(.red) // Cor da imagem
-                    })
-                    .navigationDestination(isPresented: $showTableView, destination: { TableView(viewModel: viewModel)}
-                    )
-                    .padding()
+                    ToolbarItem(placement: .bottomBar){
+                        Button(action: {
+                            showTableView.toggle()
+                            
+                        },
+                               label: {
+                            Image(systemName: viewModel.hasData ? "archivebox.fill" : "archivebox")
+                                .symbolEffect(
+                                    .bounce,
+                                    value: viewModel.hasData
+                                )
+                                .contentTransition(.symbolEffect(.replace))
+                            // Ajuste o tamanho da imagem conforme necessári
+                                .font(.title)
+                            // Cor da imagem
+                            // .foregroundColor(.red)
+                        })
+                        .navigationDestination(isPresented: $showTableView, destination: { TableView(viewModel: viewModel)}
+                        )
+                    }
                 }
-                
-                
             }
+                
             
-            .onTapGesture {
-                UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-            }
         }
-    }
+    
 }
     
     

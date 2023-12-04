@@ -10,50 +10,45 @@ import SwiftUI
 struct TableView: View {
    
     @ObservedObject var viewModel: ContentViewViewModel
-    //@Binding var userEntries: [UserEntry]
+    @State private var searchText = ""
+
+        var filteredEntries: [UserEntry] {
+            if searchText.isEmpty {
+                return viewModel.userEntries
+            } else {
+                return viewModel.userEntries.filter { entry in
+                    entry.coNumber.contains(searchText) || entry.formattedDate().contains(searchText)
+                }
+            }
+        }
    
     
     var body: some View {
-        
-        NavigationStack {
-            if viewModel.userEntries.isEmpty{
-                ContentUnavailableView("NoData", systemImage: "tray.fill", description: Text("Nenhuma data inserida"))
-            }else {
-                List{
-                    ForEach(viewModel.userEntries.indices, id: \.self) { index in
-                        NavigationLink(
-                            destination: EditEntryView(entry: $viewModel.userEntries[index], userEntries: $viewModel.userEntries),
-                                                label: {
-                        VStack(alignment: .leading) {
-                            Text("今日の日付　: \(viewModel.userEntries[index].formattedDate())")
-                            Text("積み先　: \(viewModel.userEntries[index].tsumisaki)")
-                            Text("行き先　: \(viewModel.userEntries[index].ikisaki)")
-                            Text("コンテナNo.　: \(viewModel.userEntries[index].coNumber)")
-                            Text("開始　: \(viewModel.userEntries[index].localDevolucao?.rawValue ?? "nenhum")")
-                            Text("コンテナサイズ　: \(viewModel.userEntries[index].selectedSize.rawValue)")
-                            Text("実 / 空　: \(viewModel.userEntries[index].selectedEstado.rawValue)")
-                            Text("車しNo.　: \(viewModel.userEntries[index].shyashiNumber)")
+            NavigationStack {
+                VStack {
+                    TextField("Pesquisar", text: $searchText)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .padding()
+
+                    if filteredEntries.isEmpty {
+                        ContentUnavailableView("NoData", systemImage: "tray.fill", description: Text("Nenhum resultado encontrado"))
+                    } else {
+                        List {
+                            ForEach(filteredEntries, id: \.id) { entry in
+                                NavigationLink(
+                                    destination: EditEntryView(entry: $viewModel.userEntries[viewModel.userEntries.firstIndex(of: entry)!], userEntries: $viewModel.userEntries),
+                                    label: {
+                                        RowData(rowData: entry)
+                                    }
+                                )
+                            }
+                            .onDelete(perform: deleteRow)
                         }
-                        
-                    }
-                                                )}
-                    .onDelete(perform:deleteRow)
-                    
-                }
-                
-                .navigationTitle("Lista salva")
-                .toolbar {
-                    ToolbarItem(placement: .topBarTrailing){
-                        EditButton()
+                        .navigationTitle("Lista salva")
                     }
                 }
-                
             }
         }
-        }
-        
-
-    
     
     private func deleteRow (at offsets: IndexSet) {
         withAnimation{
@@ -64,6 +59,7 @@ struct TableView: View {
     }
     
 }
+
 
     
 

@@ -9,46 +9,56 @@ struct EditEntryView: View {
     @State private var isShowingSaveAlert = false
     @Environment(\.dismiss) private var dismiss
     
+    @State private var editedEntry: UserEntry
+        
+        init(entry: Binding<UserEntry>, userEntries: Binding<[UserEntry]>) {
+            _entry = entry
+            _userEntries = userEntries
+            _editedEntry = State(initialValue: entry.wrappedValue)
+        }
+    
+    
     var body: some View {
         NavigationStack { // Você deve usar NavigationView ao redor da visualização para permitir a navegação de volta
-            Form {
-                Section {
-                    TextField("積み先", text: $entry.tsumisaki)
-                    TextField("行き先", text: $entry.ikisaki)
-                    TextField("コンテナNo.　", text: $entry.coNumber)
+            
+            Form{
+            Section {
+                
+                    // Use o editedEntry em vez de entry nos campos de entrada
+                    TextField("積み先", text: $editedEntry.tsumisaki)
+                    TextField("行き先", text: $editedEntry.ikisaki)
+                    TextField("コンテナNo.　", text: $editedEntry.coNumber)
                     
-                    Picker("開始", selection: $entry.localDevolucao) {
+                    Picker("開始", selection: $editedEntry.localDevolucao) {
                         ForEach(Constants.Devolucao.allCases, id: \.self) { option in
                             Text(option.rawValue).tag(Optional(option))
                         }
                     }
                     
-                    Picker("コンテナサイズ", selection: $entry.selectedSize) {
+                    Picker("コンテナサイズ", selection: $editedEntry.selectedSize) {
                         ForEach(Constants.ContainerSize.allCases, id: \.self) { option in
                             Text(option.rawValue).tag(option)
                         }
                     }
                     
-                    Picker("実 / 空", selection: $entry.selectedEstado) {
+                    Picker("実 / 空", selection: $editedEntry.selectedEstado) {
                         ForEach(Constants.Estado.allCases, id: \.self) { option in
                             Text(option.rawValue).tag(option)
                         }
                     }
                     
-                    TextField("車しNo.", text: $entry.shyashiNumber)
+                    TextField("車しNo.", text: $editedEntry.shyashiNumber)
                 } header: {
                     Text("Editar entrada")
                         .font(.largeTitle)
                 }
-                            }
-            
+                
+            }
+            .scrollDismissesKeyboard(.immediately)
             .navigationBarItems(
                 trailing: Button("Salvar") {
-                    saveChanges() // Chame a função saveChanges
+                    saveChanges()
                     isShowingSaveAlert = true
-                }
-                .onTapGesture {
-                    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
                 }
             )
             .alert(isPresented: $isShowingSaveAlert) {
@@ -56,17 +66,20 @@ struct EditEntryView: View {
                     title: Text("Salvo com Sucesso"),
                     message: Text("Seus dados foram salvos com sucesso."),
                     dismissButton: .default(Text("OK"), action: {
+                        // Atualize entry para refletir as alterações feitas
+                        $entry.wrappedValue = editedEntry
                         dismiss()
-                    }
+                    })
                 )
-            )}
+            }
         }
     }
 
     // A função saveChanges agora não precisa de um parâmetro
     func saveChanges() {
-        if let index = userEntries.firstIndex(where: { $0.id == entry.id }) {
-            userEntries[index] = entry
-        }
+//        if let index = userEntries.firstIndex(where: { $0.id == entry.id }) {
+//            userEntries[index] = entry
+//        }
+        $entry.wrappedValue = editedEntry
     }
 }

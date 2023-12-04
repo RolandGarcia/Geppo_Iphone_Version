@@ -10,6 +10,11 @@ import Foundation
 import SwiftUI
 
 class ContentViewViewModel: ObservableObject {
+    
+    var hasData: Bool {
+        return !userEntries.isEmpty
+    }
+    
     @Published var userEntries: [UserEntry] = []
     
     @Published var selectedDate = Date()
@@ -26,7 +31,7 @@ class ContentViewViewModel: ObservableObject {
     @Published var selectedSize: Constants.ContainerSize = .quarentaFeet
     @Published var selectedEstado: Constants.Estado = .cheio
     @Published var shyashiNumber = ""
-
+    
     func clearFields() {
         selectedDate = Date()
         tsumisaki = ""
@@ -38,19 +43,18 @@ class ContentViewViewModel: ObservableObject {
         shyashiNumber = ""
     }
     func addRowData() {
-        // Realize as operações necessárias para adicionar uma nova entrada de usuário
-        let newUserEntry = UserEntry(
-            selectedDate: selectedDate,
-            tsumisaki: tsumisaki,
-            coNumber: coNumber,
-            ikisaki: ikisaki,
-            localDevolucao: localDevolucao,
-            selectedSize: selectedSize,
-            selectedEstado: selectedEstado,
-            shyashiNumber: shyashiNumber
+        userEntries.append(
+            UserEntry(
+                selectedDate: selectedDate,
+                tsumisaki: tsumisaki,
+                coNumber: coNumber,
+                ikisaki: ikisaki,
+                localDevolucao: localDevolucao,
+                selectedSize: selectedSize,
+                selectedEstado: selectedEstado,
+                shyashiNumber: shyashiNumber
+            )
         )
-        userEntries.append(newUserEntry)
-        print(userEntries.count)
         clearFields()
     }
 }
