@@ -14,7 +14,13 @@ struct UserEntry: Identifiable, Equatable {
     let id = UUID()
     var selectedDate: Date
     var tsumisaki: String
-    var coNumber: String
+    var coNumber: String {
+        didSet{
+            if coNumber.count > 11 {
+                coNumber = String(coNumber.prefix(11))
+            }
+        }
+    }
     var ikisaki: String
     var localDevolucao: Constants.Devolucao?
     var selectedSize: Constants.ContainerSize

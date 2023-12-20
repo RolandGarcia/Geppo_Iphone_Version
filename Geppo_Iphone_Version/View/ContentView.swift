@@ -19,7 +19,7 @@ struct ContentView: View {
         NavigationStack {
             Form{
                 Section(header: Text("日付け入れてください")) {
-                    DatePicker("日付", selection: $viewModel.selectedDate, displayedComponents: [.date])
+                    DatePicker("日付", selection: $viewModel.selectedDate, in: Date.now..., displayedComponents: [.date] )
                         .datePickerStyle(.compact)
                         .environment(\.locale, Locale(identifier: "ja_JP"))
                         .environment(\.calendar, Calendar(identifier: .japanese))
@@ -31,7 +31,6 @@ struct ContentView: View {
                     
                     
                 }
-                
                 
                 Section(header: Text("行き先と輸出業者")) {
                     TextField("行き先", text: $viewModel.ikisaki)
